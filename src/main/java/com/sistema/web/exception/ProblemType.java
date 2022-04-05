@@ -8,7 +8,9 @@ public enum ProblemType {
 	DADOS_INVALIDOS("/dados-inválidos","Dados inválidos "),
 	USUARIO_BLOQUEADO("/usuario-bloqueado","Usuário bloqueado "),
 	SERVICO_EMAIL("/erro-servidor-email","Erro no serviço de e-mail"),
-	CONFIRMACAO_SENHA("/confirmar_senha"," campos confirmação de senha inválido!");
+	CONFIRMACAO_SENHA("/confirmar_senha"," campos confirmação de senha inválido!"),
+	NAO_ESPERADO("/erro_nao_esperado"," erro não esperado, procure o administrador do sistema!"),
+	USUARIO_NAO_ENCONTRADO("/usuario_nao_encontrado", "Usuário não encontrado");
 	
 	private String uri;
 	private String title;

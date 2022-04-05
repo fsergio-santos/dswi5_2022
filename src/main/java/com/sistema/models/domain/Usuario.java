@@ -1,6 +1,7 @@
 package com.sistema.models.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -135,10 +137,14 @@ public class Usuario implements UserDetails, Serializable {
 		this.contentType = contentType;
 	}
 
-
+    @Transient
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<GrantedAuthority> papeis = new ArrayList<GrantedAuthority>();
+		for ( Role role : this.getRoles()) {
+			papeis.add(new SimpleGrantedAuthority("ROLE_"+role.getNome().toUpperCase()));
+		}
+		return papeis;
 	}
 
 	@Override

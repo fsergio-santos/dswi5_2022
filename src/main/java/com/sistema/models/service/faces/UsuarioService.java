@@ -17,4 +17,5 @@ public interface UsuarioService {
 	Usuario findById(Long id);
 	Page<Usuario> findAll(Pageable pageable);
 	Page<Usuario> findUsuarioByName(String nome, Pageable pageable);
+	Optional<Usuario> findUsuarioByEmail(String email);
 }
