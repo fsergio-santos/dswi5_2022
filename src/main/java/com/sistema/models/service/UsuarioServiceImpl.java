@@ -46,9 +46,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new SenhaDiferenteException("As senhas estão diferentes!");
 		}
 		
-		
-		
-		
 		usuario.setPassword(encodePassword(usuario.getPassword()));
 		
 		return usuarioRepository.save(usuario);

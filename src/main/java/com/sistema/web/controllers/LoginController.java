@@ -17,14 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sistema.models.domain.Login;
 import com.sistema.models.domain.Usuario;
+import com.sistema.models.domain.dto.UsuarioLogadoDto;
 import com.sistema.models.service.faces.UsuarioService;
+import com.sistema.models.service.security.jwt.JwtTokenProvider;
 
 
 @RestController
 public class LoginController {
 
-	//@Autowired
-	//private UserDetailsService userDetaisService;
+    private String token;
+    
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 	
 	@Autowired
 	private UsuarioService usuarioService;
@@ -32,9 +36,13 @@ public class LoginController {
 	
 	@ResponseBody
 	@PostMapping(value="/login")
-	public Usuario login( @RequestBody @Valid Login login  ) {
+	public UsuarioLogadoDto login( @RequestBody @Valid Login login  ) {
+		
+		
 		
 		Optional<Usuario> usuario = usuarioService.findUsuarioByEmail(login.getEmail());
+		
+		System.out.println(usuario.get());
 		
 		if ( !usuario.isPresent() ) {
 			throw new UsernameNotFoundException("Usuário não cadastrado!");
@@ -52,9 +60,29 @@ public class LoginController {
 		   throw new BadCredentialsException("A senha informada é inválida ou está incorreta!");  
 		}
 		
+		setToken(tokenProvider.createToken(usuario.get().getEmail(), usuario.get().getRoles()));
 		
-	 	return usuario.get();
+		UsuarioLogadoDto usuarioLogado = new UsuarioLogadoDto();
+		
+		usuarioLogado.setUsername(usuario.get().getUsername());
+		usuarioLogado.setEmail(usuario.get().getEmail());
+		usuarioLogado.setToken(getToken());
+		usuarioLogado.setStatus("200");
+		
+	 	return usuarioLogado;
 	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
+	public String getToken() {
+		return token;
+	}
+	
+	
 	
 	
 }
