@@ -36,13 +36,9 @@ public class LoginController {
 	
 	@ResponseBody
 	@PostMapping(value="/login")
-	public UsuarioLogadoDto login( @RequestBody @Valid Login login  ) {
-		
-		
+	public UsuarioLogadoDto login( @RequestBody Login login  ) {
 		
 		Optional<Usuario> usuario = usuarioService.findUsuarioByEmail(login.getEmail());
-		
-		System.out.println(usuario.get());
 		
 		if ( !usuario.isPresent() ) {
 			throw new UsernameNotFoundException("Usuário não cadastrado!");

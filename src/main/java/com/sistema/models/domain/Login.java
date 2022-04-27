@@ -19,8 +19,8 @@ public class Login {
 		this.password = password;
 	}
 
-	@Email(message = "E-mail inválido")
-	@NotEmpty(message = "E-mail não pode ser nulo")
+	//@Email(message = "E-mail inválido")
+	//@NotEmpty(message = "E-mail não pode ser nulo")
 	public String getEmail() {
 		return email;
 	}
@@ -30,8 +30,8 @@ public class Login {
 	}
 
 	
-	@NotEmpty(message = " Senha inválida! ")
-	@Size(min=6, message="A senha deve conter {min} caracteres!")
+	//@NotEmpty(message = " Senha inválida! ")
+	//@Size(min=6, message="A senha deve conter {min} caracteres!")
 	public String getPassword() {
 		return password;
 	}
