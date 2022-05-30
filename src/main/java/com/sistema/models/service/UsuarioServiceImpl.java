@@ -25,8 +25,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	@Autowired
 	private PasswordEncoder passwordEnconder;
-
+	
 	@Override
 	public List<Usuario> findAll() {
 		return usuarioRepository.findAll();

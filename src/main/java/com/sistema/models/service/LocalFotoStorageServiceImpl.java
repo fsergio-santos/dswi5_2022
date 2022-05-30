@@ -74,8 +74,8 @@ public class LocalFotoStorageServiceImpl implements LocalFotoStorageService{
 		
 		String nomeFoto = foto.getNomeArquivo();
 		remover(nomeFoto);
-		
-		return null;
+		foto.setNomeArquivo("");
+		return foto;
 	}
 
 	@Override

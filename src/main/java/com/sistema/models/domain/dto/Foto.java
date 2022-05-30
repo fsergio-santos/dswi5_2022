@@ -44,6 +44,7 @@ public class Foto {
 	public void setInputStream(InputStream inputStream) {
 		this.inputStream = inputStream;
 	}
+	
 
 	@Override
 	public String toString() {

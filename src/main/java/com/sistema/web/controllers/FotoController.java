@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sistema.models.domain.dto.Foto;
+import com.sistema.models.domain.dto.FotoCadastrada;
 import com.sistema.models.domain.dto.FotoRequest;
 import com.sistema.models.service.exception.FileStorageException;
 import com.sistema.models.service.faces.LocalFotoStorageService;
@@ -39,7 +41,7 @@ public class FotoController {
 			foto.setNomeArquivo(fotoRequest.getFoto().getOriginalFilename());
 			foto.setInputStream(fotoRequest.getFoto().getInputStream());
 			foto.setContentType(fotoRequest.getFoto().getContentType());
-			foto = localFotoStorageService.armazenar(foto);
+	    	foto = localFotoStorageService.armazenar(foto);
 		} catch (IOException e) {
 			throw new FileStorageException("Falha na gravação do arquivo da foto");
 		}
@@ -47,17 +49,18 @@ public class FotoController {
 	}
 	
 	
-	@DeleteMapping(value="/delete/{nomeFoto:.+}")
-	public ResponseEntity<Foto> excluirFoto(@PathVariable String nomeFoto){
+	@DeleteMapping(value="/delete", consumes=MediaType.APPLICATION_JSON_VALUE,
+                                    produces=MediaType.APPLICATION_JSON_VALUE )
+	public ResponseEntity<Foto> excluirFoto(@RequestBody FotoCadastrada fotoCadastrada){
 		
 		Foto foto = new Foto(); 
 		
 		foto.setId(0L);
-        foto.setNomeArquivo(nomeFoto);
+        foto.setNomeArquivo(fotoCadastrada.getFoto());
         
         foto = localFotoStorageService.excluirFoto(foto);
-		
-		return null;
+     	
+		return ResponseEntity.ok().body(foto);
 	}
 	
 	

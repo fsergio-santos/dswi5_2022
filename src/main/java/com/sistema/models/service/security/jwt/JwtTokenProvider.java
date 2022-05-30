@@ -32,6 +32,7 @@ public class JwtTokenProvider {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	
 	@PostConstruct
 	protected void init() {
 		chaveSecreta = Base64.getEncoder().encodeToString(chaveSecreta.getBytes());
