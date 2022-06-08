@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "TAB_ROLE")
 public class Role {
@@ -49,6 +51,7 @@ public class Role {
 		this.nome = nome;
 	}
 	
+	@JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
 	public List<Usuario> getUsuarios() {
 		return usuarios;

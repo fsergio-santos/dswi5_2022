@@ -18,4 +18,5 @@ public interface UsuarioService {
 	Page<Usuario> findAll(Pageable pageable);
 	Page<Usuario> findUsuarioByName(String nome, Pageable pageable);
 	Optional<Usuario> findUsuarioByEmail(String email);
+	void updateFoto(Long id, String string);
 }

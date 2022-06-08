@@ -16,6 +16,7 @@ import com.sistema.models.service.exception.EmailJaCadastradoExecption;
 import com.sistema.models.service.exception.EntidadeNaoCadastrada;
 import com.sistema.models.service.exception.IdNaoPodeSerZeroOuNulo;
 import com.sistema.models.service.exception.SenhaDiferenteException;
+import com.sistema.models.service.faces.RoleService;
 import com.sistema.models.service.faces.UsuarioService;
 
 @Service
@@ -24,6 +25,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@Autowired
 	private PasswordEncoder passwordEnconder;
@@ -47,6 +51,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		usuario.setPassword(encodePassword(usuario.getPassword()));
+     	
+        usuario.getRoles()
+               .forEach(role->roleService.findById(role.getId()));
+		
 		
 		return usuarioRepository.save(usuario);
 	}
@@ -86,6 +94,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	private String encodePassword(String password) {
 		return passwordEnconder.encode(password);
+	}
+
+	@Override
+	public void updateFoto(Long id, String nomeFoto) {
+		usuarioRepository.updateFotoUsuario(id, nomeFoto);
 	}
 
 }

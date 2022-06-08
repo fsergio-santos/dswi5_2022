@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,20 +18,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sistema.models.domain.Usuario;
-import com.sistema.models.service.faces.UsuarioService;
+import com.sistema.models.domain.Role;
+import com.sistema.models.service.faces.RoleService;
 import com.sistema.models.service.util.GerarListaPagina;
 
 @RestController
-@RequestMapping(value="/usuario")
-public class UsuarioController {
+@RequestMapping(value="/role")
+public class RoleController {
 	
 	@Autowired
-	private UsuarioService usuarioService;
+	private RoleService roleService;
 	
 	@ResponseBody
 	@GetMapping(value="/listar")
-	public Page<Usuario> findAll(
+	public Page<Role> findAll(
 			@RequestParam(value="paginaAtual",required=false) Optional<Integer> paginaAtual,
 			@RequestParam(value="tamanhoPagina",required=false) Optional<Integer> tamanhoPagina,
 			@RequestParam(value="atributo",required=false) Optional<String> atributo,
@@ -43,15 +42,15 @@ public class UsuarioController {
 		    		                        dir.orElse("asc"), 
 		    		                        atributo.orElse("id") );
 		    
-		    Page<Usuario> paginaUsuario = usuarioService.findAll(pageable);
+		    Page<Role> paginaRole = roleService.findAll(pageable);
 		
-		return paginaUsuario; 
+		return paginaRole; 
 	}
 	
 	
 	@ResponseBody
 	@GetMapping(value="/listar/{nome}")
-	public Page<Usuario> findUsuarioByName(
+	public Page<Role> findRoleByName(
 			@PathVariable("nome") String nome,
 			@RequestParam(value="paginaAtual",required=false) Optional<Integer> paginaAtual,
 			@RequestParam(value="tamanhoPagina",required=false) Optional<Integer> tamanhoPagina,
@@ -63,38 +62,36 @@ public class UsuarioController {
 		    		                        dir.orElse("asc"), 
 		    		                        atributo.orElse("id") );
 		    
-		    Page<Usuario> paginaUsuario = usuarioService.findUsuarioByName(nome, pageable);
+		    Page<Role> paginaRole = roleService.findRoleByName(nome, pageable);
 		
-		return paginaUsuario; 
+		return paginaRole; 
 	}
 	
 	@ResponseBody
-	@PostMapping(value="/inserir", consumes = MediaType.APPLICATION_JSON_VALUE, 
-	                               produces = MediaType.APPLICATION_JSON_VALUE)
-	public Usuario inserir(@RequestBody Usuario usuario) {
-		System.out.println(usuario.toString());
-	 	return usuarioService.save(usuario);
+	@PostMapping(value="/inserir")
+	public Role inserir(@RequestBody Role role) {
+	 	return roleService.save(role);
 	}
 	
 	
 	@ResponseBody
 	@PostMapping(value="/alterar")
-	public Usuario update(@RequestBody Usuario usuario) {
-	 	return usuarioService.update(usuario);
+	public Role update(@RequestBody Role role) {
+	 	return roleService.update(role);
 	}
 	
 
 	@ResponseBody
 	@DeleteMapping(value="/delete/{id}")
 	public void deleteById(@PathVariable("id") Long id) {
-		usuarioService.deleteById(id);
+		roleService.deleteById(id);
 	}
 	
 	
 	@ResponseBody
 	@GetMapping(value="/buscar/{id}")
-	public Usuario findById(@PathVariable("id") Long id) {
-		return usuarioService.findById(id);
+	public Role findById(@PathVariable("id") Long id) {
+		return roleService.findById(id);
 		
 	}
 	

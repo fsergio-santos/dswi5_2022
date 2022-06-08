@@ -26,6 +26,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="TAB_USUARIO")
 public class Usuario implements UserDetails, Serializable {
@@ -48,7 +50,7 @@ public class Usuario implements UserDetails, Serializable {
 	
 		
 	public Usuario() {
-		
+		roles = new ArrayList<>();
 	}
 	
     public Usuario(Long id, String username, String password, String confirmPassword, String email, Integer failedLogin,
@@ -200,6 +202,7 @@ public class Usuario implements UserDetails, Serializable {
 		this.confirmPassword = confirmPassword;
 	}
 	
+	@JsonIgnore()
 	@Size(min=1,message = "Informar pelo menos um {min} papel para o usuário")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="TAB_USUARIO_ROLE",
@@ -209,6 +212,7 @@ public class Usuario implements UserDetails, Serializable {
 		return roles;
 	}
 
+	
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
@@ -242,8 +246,10 @@ public class Usuario implements UserDetails, Serializable {
 	public String toString() {
 		return "Usuario [id=" + id + ", username=" + username + ", password=" + password + ", confirmPassword="
 				+ confirmPassword + ", email=" + email + ", failedLogin=" + failedLogin + ", lastLogin=" + lastLogin
-				+ ", foto=" + foto + ", contentType=" + contentType + ", ativo=" + ativo + "]";
+				+ ", foto=" + foto + ", contentType=" + contentType + ", ativo=" + ativo + ", roles=" + roles + "]";
 	}
+
+	
 
 	
      

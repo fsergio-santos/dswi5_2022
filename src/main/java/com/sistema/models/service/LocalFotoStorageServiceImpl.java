@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,9 @@ public class LocalFotoStorageServiceImpl implements LocalFotoStorageService{
 	@Override
 	public Foto armazenar(Foto foto) {
 		String nomeFoto = null;
-		if (foto.getId() != 0L) {
-			Usuario usuario = usuarioService.findById(foto.getId());
+		Usuario usuario = buscarUsuario(foto.getId());
+		if (!Objects.isNull(usuario)) {
+			remover(usuario.getFoto());
 		}
 		nomeFoto = gerarNomeArquivoFoto(foto.getNomeArquivo());
 		try {
@@ -65,15 +67,24 @@ public class LocalFotoStorageServiceImpl implements LocalFotoStorageService{
 
 	@Override
 	public Usuario buscarUsuario(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Usuario usuario = null;
+		if (id != 0L) {
+		    usuario = usuarioService.findById(id);
+		}
+		return usuario;
 	}
 
 	@Override
 	public Foto excluirFoto(Foto foto) {
-		
-		String nomeFoto = foto.getNomeArquivo();
-		remover(nomeFoto);
+		Usuario usuario = buscarUsuario(foto.getId());
+		String nomeFoto = Objects.isNull(usuario) 
+				        ? foto.getNomeArquivo() 
+				        : usuario.getFoto(); 
+		if (remover(nomeFoto)) {
+		    if (!Objects.isNull(usuario)) {
+		    	usuarioService.updateFoto(usuario.getId(),"");
+		    }
+		}
 		foto.setNomeArquivo("");
 		return foto;
 	}
@@ -81,19 +92,22 @@ public class LocalFotoStorageServiceImpl implements LocalFotoStorageService{
 	@Override
 	public boolean remover(String foto) {
         String thumbnail = "thumbnail."+foto;
-        try {
-        	Path arquivoThumbnailPath = getArquivoPath(thumbnail);
-			Files.deleteIfExists(arquivoThumbnailPath);
-			
-			Path arquivoPath = getArquivoPath(foto);
-			Files.deleteIfExists(arquivoPath);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-   		return false;
+        if (!foto.isEmpty()) {
+	        try {
+	        	Path arquivoThumbnailPath = getArquivoPath(thumbnail);
+				Files.deleteIfExists(arquivoThumbnailPath);
+				
+				Path arquivoPath = getArquivoPath(foto);
+				Files.deleteIfExists(arquivoPath);
+				return true;
+			} catch (IOException e) {
+		       throw new FileStorageException("Erro na exclusão da foto"); 
+			}
+   		
+        }
+        return false; 
 	}
-
+	
 	@Override
 	public InputStream recuperar(String foto) {
 		// TODO Auto-generated method stub

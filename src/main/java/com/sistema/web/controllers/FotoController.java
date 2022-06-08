@@ -49,17 +49,19 @@ public class FotoController {
 	}
 	
 	
+	@SuppressWarnings("unlikely-arg-type")
 	@DeleteMapping(value="/delete", consumes=MediaType.APPLICATION_JSON_VALUE,
                                     produces=MediaType.APPLICATION_JSON_VALUE )
 	public ResponseEntity<Foto> excluirFoto(@RequestBody FotoCadastrada fotoCadastrada){
 		
 		Foto foto = new Foto(); 
-		
-		foto.setId(0L);
+		Long id = 0L;
+		if  (!"".equals(fotoCadastrada.getId())) {
+			id = Long.valueOf(fotoCadastrada.getId());
+		}
+		foto.setId(id);
         foto.setNomeArquivo(fotoCadastrada.getFoto());
-        
         foto = localFotoStorageService.excluirFoto(foto);
-     	
 		return ResponseEntity.ok().body(foto);
 	}
 	

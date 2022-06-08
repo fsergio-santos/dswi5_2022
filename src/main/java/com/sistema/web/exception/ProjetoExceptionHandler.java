@@ -24,7 +24,7 @@ import com.sistema.models.service.exception.EmailJaCadastradoExecption;
 import com.sistema.models.service.exception.IdNaoPodeSerZeroOuNulo;
 import com.sistema.models.service.exception.SenhaDiferenteException;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ProjetoExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@Autowired
