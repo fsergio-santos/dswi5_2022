@@ -139,6 +139,7 @@ public class Usuario implements UserDetails, Serializable {
 		this.contentType = contentType;
 	}
 
+	@JsonIgnore
     @Transient
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -202,7 +203,7 @@ public class Usuario implements UserDetails, Serializable {
 		this.confirmPassword = confirmPassword;
 	}
 	
-	@JsonIgnore()
+	//@JsonIgnore()
 	@Size(min=1,message = "Informar pelo menos um {min} papel para o usuário")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="TAB_USUARIO_ROLE",

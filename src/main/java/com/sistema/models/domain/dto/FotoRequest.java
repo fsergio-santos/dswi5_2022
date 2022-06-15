@@ -9,19 +9,19 @@ public class FotoRequest implements Serializable {
 
 	private static final long serialVersionUID = 657066037177942886L;
 
-	private String id;
+	private Long id;
 	private MultipartFile foto;
 		
-	public FotoRequest(String id, MultipartFile foto) {
+	public FotoRequest(Long id, MultipartFile foto) {
 		this.id = id;
 		this.foto = foto;
 	}
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

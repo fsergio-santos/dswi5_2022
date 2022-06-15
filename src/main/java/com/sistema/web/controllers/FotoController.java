@@ -31,7 +31,7 @@ public class FotoController {
 	public ResponseEntity<Foto> uploadFoto(FotoRequest fotoRequest){
 		
 		Long id = 0L;
-		if  (!"".equals(fotoRequest.getId())) {
+		if  ( fotoRequest.getId() != 0) {
 			id = Long.valueOf(fotoRequest.getId());
 		}
 		
@@ -49,14 +49,14 @@ public class FotoController {
 	}
 	
 	
-	@SuppressWarnings("unlikely-arg-type")
 	@DeleteMapping(value="/delete", consumes=MediaType.APPLICATION_JSON_VALUE,
                                     produces=MediaType.APPLICATION_JSON_VALUE )
 	public ResponseEntity<Foto> excluirFoto(@RequestBody FotoCadastrada fotoCadastrada){
 		
 		Foto foto = new Foto(); 
 		Long id = 0L;
-		if  (!"".equals(fotoCadastrada.getId())) {
+		System.out.println(fotoCadastrada.toString());
+		if  (fotoCadastrada.getId() != 0) {
 			id = Long.valueOf(fotoCadastrada.getId());
 		}
 		foto.setId(id);
